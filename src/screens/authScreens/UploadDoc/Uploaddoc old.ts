@@ -1,0 +1,522 @@
+import React,{useState} from 'react';
+import {View,Image,TouchableOpacity} from 'react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
+
+export const ImageComponent = ({imageStyle, uri})=> {
+  return (
+    <View>
+      <Image  style={imageStyle} source={{uri:uri}}/>
+    </View>
+  );
+}
+
+export default MainScreen = () => {
+return (
+  <View style={{flex:1, backgroundColor:'green'}}>
+    <ImageCompo />
+    <ImageCompo />
+    <ImageCompo />
+    <ImageCompo />
+  </View>
+)
+    
+}
+
+const ImageCompo = () => {
+  const [tempUri, setTempUri] = useState("");
+  const openCamera = () => {
+    var options = {
+      title: "Profile Picture",
+
+      storageOptions: {
+        skipBackup: true,
+        path: "images",
+      },
+      mediaType: "image",
+    };
+    launchCamera(options, (response) => {
+      console.log("Response = ", response);
+
+      if (response.didCancel) {
+        console.log("User cancelled image picker");
+      } else {
+        setTempUri(response.assets[0].uri);
+      }
+    });
+  };
+  const openLibrary = () => {
+    launchImageLibrary({},(response)=>{
+      if(response){
+       console.log("console");
+      }
+    })
+  }
+
+return (
+  <View style={{flex:1, backgroundColor:'red'}}>
+  <TouchableOpacity onPress={()=>{openCamera()}}
+   style={{backgroundColor:'blue', height:40}}>
+   <ImageComponent imageStyle={{height:45, width:45}} uri={tempUri}/>
+   </TouchableOpacity>
+  </View>
+);
+}
+
+
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  Image,
+  ScrollView,
+  Modal,
+} from "react-native";
+import { styles } from "./style";
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
+import { appImages } from "../../../assets/utility";
+import { appColor, COLORS } from "../../../constants/colors";
+import MyTextInput from "../../../components/TextInput";
+import {MyButton, GradientButton} from "../../../components/button";
+import { Icon } from "react-native-elements";
+// import { Icon } from "react-native-elements/dist/icons/Icon";
+import ImageResizer from "react-native-image-resizer";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+// import storage from "@react-native-firebase/storage";
+// import { signUp } from "../../Backend/auth";
+// import { uploadImage } from "../../Backend/utility";
+// import { Settings, LoginButton, AccessToken, LoginManager, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes,
+// } from '@react-native-google-signin/google-signin';
+// import { saveData } from "../../Backend/utility";
+// import SimpleToast from "react-native-simple-toast";
+
+
+// export const ImageComponent = ({imageStyle, PicUri})=> {
+//   return (
+//     <View>
+//       <Image  style={imageStyle} 
+//       source={PicUri === "" ? appImages.addressbook : {uri:PicUri}}/>
+//     </View>
+//   );
+// }
+
+
+// const DocCard = (props) => { 
+//   const { Title, 
+//     onPress, 
+//     customstyles,
+//     docStep,
+//     docTitle,
+//     Docicon,
+//     Docicontype,
+//     Dociconsize,
+//     ImageUriStyles,
+//     Forwordicon,
+//     Forwordicontype, } = props;
+    
+// const [ImageUri, setImageUri] = useState("");
+// const [UploadImage, setUploadImage] = useState("");
+// const [ModalVisble, setModalVisble] = useState(false);
+// const [isLoading, setIsloading] = useState(false);
+// const [isShow, setIsShow] = useState(true);
+// const [ImageResponse, setImageResponse] = useState(null);
+
+// const Camera = () => {
+//   var options = {
+//     title: "Profile Picture",
+
+//     storageOptions: {
+//       skipBackup: true,
+//       path: "images",
+//     },
+//     mediaType: "image",
+//   };
+
+//   launchCamera(options, (response) => {
+//     console.log("Response = ", response);
+
+//     if (response.didCancel) {
+//       console.log("User cancelled image picker");
+//     } else {
+//       setImageUri(response.assets[0].uri);
+//       setImageResponse(response.assets[0]);
+//       // ImageUpload(response);
+//     }
+//   });
+// };
+// const Gallery = () => {
+//   var options = {
+//     title: "Profile Photo",
+//     storageOptions: {
+//       skipBackup: true,
+//       path: "images",
+//     },
+//   };
+//   launchImageLibrary(options, (response) => {
+//     if (response.didCancel) {
+//       console.log("User cancelled image picker");
+//     } else if (response.error) {
+//       console.log("ImagePicker Error: ", response.error);
+//     } else if (response.customButton) {
+//       console.log("User tapped custom button: ", response.customButton);
+//       alert(response.customButton);
+//     } else {
+//       //setFilePath(response);
+//       console.log(">>>>>>>>>>>>", response.assets);
+//       setImageUri(response.assets[0].uri);
+//       // ImageUpload(response.assets[0]);
+//       setImageResponse(response.assets[0]);
+//     }
+//   });
+// };
+// return (
+//   <>
+//   <TouchableOpacity
+  
+//   onPress={() => setModalVisble(!ModalVisble)}
+//     // onPress={onPress}
+//     style={[customstyles, styles.DocCardView]}
+//   >
+//   <View style={styles.cardItem}>
+
+//    <View style={{flexDirection: 'row', alignItems: "center"}}>
+//      <ImageComponent imageStyle={ImageUriStyles}
+//       PicUri={ImageUri }/>
+//    {/* <Image
+//         source={NewImage === "" ? appImages.userlogo : { uri: NewImage }}
+//         style={styles.iconView}
+//       /> */}
+//    <View >
+//      <Text style={styles.uploadtext}>{docStep}</Text>
+//    <Text style={{fontSize: responsiveFontSize(2), fontWeight: "bold", }}>
+//       {docTitle }</Text>
+//    </View>
+//    </View>
+//     <Icon style={{marginHorizontal: responsiveWidth(2)}}
+//         name={Docicon ? Docicon : null} 
+//         type={Docicontype ? Docicontype : null} 
+//         size={Dociconsize ? Dociconsize : responsiveFontSize(3) }
+//         color={appColor.Primary} />
+//     </View>
+    
+//   </TouchableOpacity>
+//   <Modal 
+//   animationType="fade" 
+//   transparent={true} 
+//   visible={ModalVisble}
+//   onRequestClose={() => {
+//     setModalVisble(!ModalVisble);
+//   }}
+//   >
+//     <TouchableOpacity
+//       style={styles.modalContainer}
+//       activeOpacity={1}
+//       onPress={() => setModalVisble(false)}
+//     >
+//       <View
+//         style={{
+//           backgroundColor: appColor.white,
+//           borderRadius: responsiveWidth(1.5),
+//         }}
+//       >
+//         <TouchableOpacity
+//           onPress={() => {
+//             Camera(), setModalVisble(false);
+//           }}
+//           style={styles.ModalTouchable}
+//         >
+//           <Icon
+//             type={"feather"}
+//             name="camera"
+//             color="black"
+//             size={responsiveFontSize(5)}
+//           />
+//           <Text style={styles.ModalText}>Take a Photo</Text>
+//         </TouchableOpacity>
+//         <TouchableOpacity
+//           onPress={() => {
+//             Gallery(), setModalVisble(false);
+//           }}
+//           style={styles.ModalTouchable}
+//         >
+//           <Icon
+//             type={"feather"}
+//             name="image"
+//             color="black"
+//             size={responsiveFontSize(5)}
+//           />
+//           <Text style={styles.ModalText}> Choose from Gallery</Text>
+//         </TouchableOpacity>
+//       </View>
+//     </TouchableOpacity>
+//   </Modal>
+//   </>
+// )
+// };
+
+
+// const UploadDoc = (props) => {
+
+//   const [ModalVisble2, setModalVisble2] = useState(false);
+//   const [UploadImage, setUploadImage] = useState("");
+
+//   return (
+//     <View style={styles.container}>
+//       <ScrollView>
+//         <View style={styles.form}>
+//           <TouchableOpacity  style={styles.imageContainer}
+//           onPress={() => setModalVisble(!ModalVisble)}>
+//             <Image
+//               source={appImages.dealer}
+//               style={styles.imageContainer}
+//             />
+//           </TouchableOpacity>
+//           {/* <Text style={styles.uploadtext}>Upload Picture</Text> */}
+//           <Text style={styles.CreateTextText}>Upload Your Docments</Text>
+
+//          <View> 
+//          <DocCard
+//          docStep={"Step 1"}
+//          docTitle={"CNIC Front Pic"}
+//          Docicon={UploadImage  ? "check-circle" : "file-upload" }
+//          Docicontype={"material"}
+//          ImageUriStyles={styles.iconView}
+//          onPress={() => setModalVisble(!ModalVisble)}
+//          />
+//          <DocCard
+//          docStep={"Step 3"}
+//          docTitle={"CNIC Back Pic"}
+//          Docicon={UploadImage  ? "check-circle" : "file-upload" }
+//          Docicontype={"material"}
+//          ImageUriStyles={styles.iconView}
+//          onPress={() => setModalVisble(!ModalVisble)}
+//          />
+//          <DocCard
+//          docStep={"Step 4"}
+//          docTitle={"Previous Education Certificate"}
+//          Docicon={UploadImage  ? "check-circle" : "file-upload" }
+//          Docicontype={"material"}
+//          ImageUriStyles={styles.iconView}
+//          onPress={() => setModalVisble(!ModalVisble)}
+//          />
+//          <DocCard
+//          docStep={"Step 2"}
+//          docTitle={"Other Certificate"}
+//          Docicon={UploadImage  ? "check-circle" : "file-upload" }
+//          Docicontype={"material"}
+//          ImageUriStyles={styles.iconView}
+//          onPress={() => setModalVisble(!ModalVisble)}
+//          />
+//          </View>
+          
+//           <MyButton
+//             Title={"Register"}
+//             onPress={() => setModalVisble2(!ModalVisble2)}
+//            
+//             // activity={isLoading}
+//           />
+//         </View>
+//         <Modal 
+//             animationType="fade" 
+//             transparent={true} 
+//             visible={ModalVisble2}
+//             onRequestClose={() => {
+//               setModalVisble2(!ModalVisble2);
+//             }}
+//             >
+//             <TouchableOpacity
+//               style={styles.modalContainer}
+//               activeOpacity={1}
+//               onPress={() => setModalVisble2(false)}
+//             >
+//                <View
+//         style={{
+//           backgroundColor: appColor.white,
+//           borderRadius: responsiveWidth(1.5),
+//           height: responsiveHeight(20),
+//           width: responsiveWidth(80),
+//           justifyContent: "center",
+//           alignItems: "center",
+//         }}
+//       >
+//         <Text style={{ textAlign: 'center', ...styles.ModalText}}>
+//           We are currently reviewing your profile,
+//           you can login once your profile is approved. </Text>
+//       </View>
+//             </TouchableOpacity>
+//           </Modal>
+//       </ScrollView>
+      
+//     </View>
+//   );
+// };
+// export default UploadDoc;
+
+
+
+// import React, { useEffect, useState } from "react";
+// import {
+//   View,
+//   TouchableOpacity,
+//   Text,
+//   Image,
+//   ScrollView,
+//   Modal,
+// } from "react-native";
+// import { styles } from "./style";
+// import {
+//   responsiveFontSize,
+//   responsiveHeight,
+//   responsiveWidth,
+// } from "react-native-responsive-dimensions";
+// import { appImages } from "../../../assets/utility";
+// import { appColor, COLORS } from "../../../constants/colors";
+// import MyTextInput from "../../../components/TextInput";
+// import {MyButton, GradientButton} from "../../../components/button";
+// import { Icon } from "react-native-elements";
+// // import { Icon } from "react-native-elements/dist/icons/Icon";
+// import ImageResizer from "react-native-image-resizer";
+// import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+// // import storage from "@react-native-firebase/storage";
+// // import { signUp } from "../../Backend/auth";
+// // import { uploadImage } from "../../Backend/utility";
+// // import { Settings, LoginButton, AccessToken, LoginManager, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+// // import {
+// //   GoogleSignin,
+// //   GoogleSigninButton,
+// //   statusCodes,
+// // } from '@react-native-google-signin/google-signin';
+// // import { saveData } from "../../Backend/utility";
+// // import SimpleToast from "react-native-simple-toast";
+
+// const UploadDoc = (props) => {
+
+//   const [ModalVisble, setModalVisble] = useState(false);
+    
+//   const [NewImage, setNewImage] = useState("");
+//   const [ImageResponse, setImageResponse] = useState(null);
+
+//     const Camera = () => {
+//       var options = {
+//         title: "Profile Picture",
+  
+//         storageOptions: {
+//           skipBackup: true,
+//           path: "images",
+//         },
+//         mediaType: "image",
+//       };
+  
+     
+
+//     };
+//     const Gallery = () => {
+//       var options = {
+//         title: "Profile Photo",
+//         storageOptions: {
+//           skipBackup: true,
+//           path: "images",
+//         },
+//       };
+//       launchImageLibrary(options, (response) => {
+//         if (response.didCancel) {
+//           console.log("User cancelled image picker");
+//         } else if (response.error) {
+//           console.log("ImagePicker Error: ", response.error);
+//         } else if (response.customButton) {
+//           console.log("User tapped custom button: ", response.customButton);
+//           alert(response.customButton);
+//         } else {
+//           //setFilePath(response);
+//           console.log(">>>>>>>>>>>>", response.assets);
+//           setNewImage(response.assets[0].uri);
+//           // ImageUpload(response.assets[0]);
+//           setImageResponse(response.assets[0]);
+//         }
+//       });
+//     }
+
+// const ImageComp =  ({imageCompstyle, uri}) => {
+
+//   return (
+//           <Image
+//       source={NewImage === "" ? appImages.userlogo : { uri: uri }}
+//       style={[imageCompstyle, ...styles.iconView]}
+//       />
+//   );
+// };
+// return(
+//   <ScrollView>
+//   <View style={styles.form}>
+//     <TouchableOpacity  style={styles.imageContainer}
+//     onPress={() => setModalVisble(!ModalVisble)}>
+//     <ImageComp  
+    
+//       imageCompstyle={styles.imageContainer}
+//       />
+//     </TouchableOpacity>
+  
+//   </View>
+//   <Modal 
+//       animationType="fade" 
+//       transparent={true} 
+//       visible={ModalVisble}
+//       onRequestClose={() => {
+//         setModalVisible(!modalVisible);
+//       }}
+//       >
+//         <TouchableOpacity
+//           style={styles.modalContainer}
+//           activeOpacity={1}
+//           onPress={() => setModalVisble(false)}
+//         >
+//           <View
+//             style={{
+//               backgroundColor: "white",
+//               borderRadius: responsiveWidth(1.5),
+//             }}
+//           >
+//             <TouchableOpacity
+//               onPress={() => {
+//                 Camera(), setModalVisble(false);
+//               }}
+//               style={styles.ModalTouchable}
+//             >
+//               <Icon
+//                 type={"feather"}
+//                 name="camera"
+//                 color="black"
+//                 size={responsiveFontSize(5)}
+//               />
+//               <Text style={styles.ModalText}>Take a Photo</Text>
+//             </TouchableOpacity>
+//             <TouchableOpacity
+//               onPress={() => {
+//                 Gallery(), setModalVisble(false);
+//               }}
+//               style={styles.ModalTouchable}
+//             >
+//               <Icon
+//                 type={"feather"}
+//                 name="image"
+//                 color="black"
+//                 size={responsiveFontSize(5)}
+//               />
+//               <Text style={styles.ModalText}> Choose from Gallery</Text>
+//             </TouchableOpacity>
+//           </View>
+//         </TouchableOpacity>
+//       </Modal>
+// </ScrollView>
+
+// )
+// }
+// export default UploadDoc;

@@ -15,16 +15,16 @@ const Favorite = (props) => {
   return (
     <View style={styles.container}>
       <View style={MyStyles.MainHeader }>
-        <Text style={styles.ListCardTitle}>Fovorites</Text>
+        <Text style={styles.ListCardTitle}>Scan</Text>
      
-      <HeaderIcon iconName={"bell"}/>
+      {/* <HeaderIcon iconName={"bell"}/> */}
      
       </View>
-      <MyButton Title={'Move to Plan Screen'}
+      {/* <MyButton Title={'Move to Plan Screen'}
       onPress= {() => props.navigation.navigate("HomeScreen" )}  />
      
       <MyButton Title={'Move to Auth'}
-      onPress= {() => props.navigation.navigate("Login")}     />
+      onPress= {() => props.navigation.navigate("Login")}     /> */}
 
     </View>
   

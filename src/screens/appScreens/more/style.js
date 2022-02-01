@@ -10,7 +10,7 @@ import { appColor, COLORS, MyStyles } from "../../../constants/colors";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: appColor.Primary,
+    backgroundColor: appColor.white,
   },
   headerView: {
     // width: responsiveWidth(100),

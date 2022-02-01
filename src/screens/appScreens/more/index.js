@@ -86,7 +86,7 @@ const More = (props) => {
         translucent={false}
         barStyle={"dark-content"}
       />
-       <Header onPress={() => props.navigation.goBack()}/>
+       {/* <Header onPress={() => props.navigation.goBack()}/>
       <View style={styles.headerView}>
        <View style={styles.ProfileTitleView}> 
          <Text style={{fontSize: responsiveFontSize(3), color: appColor.white}}>Welcome</Text>
@@ -169,9 +169,9 @@ const More = (props) => {
               //     props.navigation.navigate("Auth", { screen: "Dashboard" })
               //   }
               //   } }
-            />
+            /> 
 
-      </View>
+      </View>*/}
       
     </SafeAreaView>
   )
